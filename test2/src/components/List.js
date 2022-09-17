@@ -20,8 +20,45 @@ const List = () => {
           console.log(err)
         });
       }, []);
+    
+    const handleChange = () => {
+      const name = document.querySelector('#name').value
+      const upper = document.querySelector('#upper').value
+      const lower = document.querySelector('#lower').value
+      console.log(name);
+      console.log(upper);
+      console.log(lower);
+      axios.get(`https://9gbwl4qxh1.execute-api.ap-southeast-1.amazonaws.com/product/product?key=${name}&upper=${upper}&lower=${lower}`, {
+          headers: {
+          }
+      }).then(res => {
+        setMyList(res.data.products)
+      }).catch(err => {
+        console.log(err)
+      });
+      if(!name && !upper & !lower) {
+        window.location.reload(false);
+      }
+    };
   return (
-    <tbody>{myList.map(generateData)}</tbody>
+    <><div>
+      <input
+        id = 'name'
+        type="text"
+        placeholder="Type here to search"
+        onChange={handleChange} />
+        <input
+        id = 'lower'
+        type="text"
+        placeholder="Lower bound"
+        onChange={handleChange} />
+        <input
+        id = 'upper'
+        type="text"
+        placeholder="Upper bound"
+        onChange={handleChange} />
+    </div>
+    <tbody>{myList.map(generateData)}</tbody></>
   )
 }
 
